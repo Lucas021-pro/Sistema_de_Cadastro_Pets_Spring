@@ -4,7 +4,9 @@ import br.lucas.petspring.database.model.PetEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface IPetRepository extends JpaRepository<PetEntity, Integer> {
-
+    Optional<PetEntity> findByName(String name);
 }
