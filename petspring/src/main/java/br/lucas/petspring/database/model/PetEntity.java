@@ -3,12 +3,14 @@ package br.lucas.petspring.database.model;
 import br.lucas.petspring.enums.SexoPet;
 import br.lucas.petspring.enums.TipoPet;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Table (name = "tb_pets")
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Builder
 public class PetEntity {
 
