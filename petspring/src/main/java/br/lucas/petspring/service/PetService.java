@@ -5,6 +5,7 @@ import br.lucas.petspring.database.repository.IPetRepository;
 import br.lucas.petspring.dto.PetDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +38,12 @@ public class PetService {
 
     private String tratarCampoTexto(String valor) {
         return (valor == null || valor.trim().isEmpty()) ? NAO_INFORMADO : valor.trim();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void deletarPet(Integer petId) throws Exception {
+        PetEntity pet = petRepository.findById(petId)
+                .orElseThrow(() -> new RuntimeException("Pet não encontrado"));
+        petRepository.delete(pet);
     }
 }
