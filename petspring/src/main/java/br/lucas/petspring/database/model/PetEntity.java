@@ -35,7 +35,8 @@ public class PetEntity {
     @Enumerated(EnumType.STRING)
     private SexoPet sexo;
 
-    private String rua;
-    private String numero;
-    private String cidade;
+    @ManyToOne
+    @JoinColumn(name = "dono_id")
+    private DonoEntity dono;
+
 }
