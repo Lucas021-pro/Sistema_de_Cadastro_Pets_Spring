@@ -3,6 +3,8 @@ package br.lucas.petspring.service;
 import br.lucas.petspring.database.model.PetEntity;
 import br.lucas.petspring.database.repository.IPetRepository;
 import br.lucas.petspring.dto.PetDTO;
+import br.lucas.petspring.exception.BadRequestException;
+import br.lucas.petspring.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +19,7 @@ public class PetService {
     public void criarPet(PetDTO petDTO) {
         petRepository.findByName(petDTO.getNome())
                 .ifPresent(a -> {
-                    throw new RuntimeException("Pet já cadastrado");
+                    throw new BadRequestException("Pet já cadastrado");
                 });
 
         PetEntity novoPet = PetEntity.builder()
@@ -43,7 +45,7 @@ public class PetService {
     @Transactional(rollbackFor = Exception.class)
     public void deletarPet(Integer petId) throws Exception {
         PetEntity pet = petRepository.findById(petId)
-                .orElseThrow(() -> new RuntimeException("Pet não encontrado"));
+                .orElseThrow(() -> new NotFoundException("Pet não encontrado"));
         petRepository.delete(pet);
     }
 }
