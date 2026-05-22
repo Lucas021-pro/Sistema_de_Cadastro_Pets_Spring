@@ -25,6 +25,7 @@ public class DonoEntity {
     @Column(nullable = false)
     private String cpf;
 
+    @Column(nullable = false)
     private String telefone;
 
     private String rua;
@@ -33,5 +34,4 @@ public class DonoEntity {
 
     @OneToMany(mappedBy = "dono")
     private List<PetEntity> pets = new ArrayList<>();
-
 }
