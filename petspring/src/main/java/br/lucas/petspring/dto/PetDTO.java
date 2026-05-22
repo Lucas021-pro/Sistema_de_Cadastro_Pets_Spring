@@ -21,13 +21,13 @@ public class PetDTO {
     @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s]+$", message = "O sobrenome não pode conter caracteres especiais ou números.")
     private String sobrenome;
 
-    @NotBlank(message = "O tipo (CACHORRO ou GATO) do pet é onrigatório")
+    @NotNull(message = "O tipo (CACHORRO ou GATO) do pet é onrigatório")
     private TipoPet tipo;
 
-    @NotBlank(message = "O sexo(MACHO ou FEMEA) do pet é onrigatório")
+    @NotNull(message = "O sexo(MACHO ou FEMEA) do pet é onrigatório")
     private SexoPet sexo;
 
-    @NotBlank(message = "O peso do pet é onrigatório")
+    @NotNull(message = "O peso do pet é onrigatório")
     @Min(value = 0, message = "O peso não pode ser negativo.")
     @DecimalMin(value = "0.5", message = "O peso mínimo permitido é 0.5kg.")
     @DecimalMax(value = "60.0", message = "O peso máximo permitido é 60kg.")

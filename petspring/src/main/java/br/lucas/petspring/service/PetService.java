@@ -17,12 +17,8 @@ public class PetService {
     private static final String NAO_INFORMADO = "NÃO INFORMADO";
 
     public void criarPet(PetDTO petDTO) {
-        petRepository.findByName(petDTO.getNome())
-                .ifPresent(a -> {
-                    throw new BadRequestException("Pet já cadastrado");
-                });
-
         PetEntity novoPet = PetEntity.builder()
+                .protocolo(java.util.UUID.randomUUID().toString())
                 .nome(petDTO.getNome().trim())
                 .sobrenome(petDTO.getSobrenome().trim())
                 .tipo(petDTO.getTipo())

@@ -20,12 +20,16 @@ public class PetEntity {
 
     @Column(nullable = false)
     private String nome;
+
     @Column(nullable = false)
     private String sobrenome;
+
     @Column(nullable = false)
     private String raca;
+
     @Column(nullable = false)
     private Double peso;
+
     @Column(nullable = false)
     private Double idade;
 
@@ -35,8 +39,14 @@ public class PetEntity {
     @Enumerated(EnumType.STRING)
     private SexoPet sexo;
 
+    @Column(nullable = false, unique = true)
+    private String protocolo;
+
+    private String rua;
+    private String numero;
+    private String cidade;
+
     @ManyToOne
     @JoinColumn(name = "dono_id")
     private DonoEntity dono;
-
 }
