@@ -40,4 +40,10 @@ public class PetController {
     public ResponseEntity<PetResponseDTO> buscarPetPorId(@PathVariable Integer petId) {
         return ResponseEntity.ok(petService.buscarPetPorId(petId));
     }
+
+    @PutMapping("/{petId}/adocao/{donoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void adotarPet(@PathVariable Integer petId, @PathVariable Integer donoId){
+        petService.adotarPet(petId, donoId);
+    }
 }

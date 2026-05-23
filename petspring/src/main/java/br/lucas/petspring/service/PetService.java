@@ -1,6 +1,8 @@
 package br.lucas.petspring.service;
 
+import br.lucas.petspring.database.model.DonoEntity;
 import br.lucas.petspring.database.model.PetEntity;
+import br.lucas.petspring.database.repository.IDonoRepository;
 import br.lucas.petspring.database.repository.IPetRepository;
 import br.lucas.petspring.dto.PetDTO;
 import br.lucas.petspring.dto.PetResponseDTO;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,11 +21,12 @@ import java.util.stream.Collectors;
 public class PetService {
 
     private final IPetRepository petRepository;
+    private final IDonoRepository donoRepository;
     private static final String NAO_INFORMADO = "NÃO INFORMADO";
 
     public void criarPet(PetDTO petDTO) {
         PetEntity novoPet = PetEntity.builder()
-                .protocolo(java.util.UUID.randomUUID().toString())
+                .protocolo(UUID.randomUUID().toString())
                 .nome(petDTO.getNome().trim())
                 .sobrenome(petDTO.getSobrenome().trim())
                 .tipo(petDTO.getTipo())
@@ -60,6 +64,17 @@ public class PetService {
                 .orElseThrow(() -> new NotFoundException("Pet não encontrado"));
 
         return converterParaDTO(pet);
+    }
+
+    public void adotarPet(Integer petId, Integer donoId){
+        PetEntity pet = petRepository.findById(petId)
+                .orElseThrow(() -> new NotFoundException("Pet não encontrado"));
+        if(pet.getDono() != null) throw new BadRequestException("Este pet já foi adotado");
+
+        DonoEntity donoEncontrado = donoRepository.findById(donoId)
+                .orElseThrow(() -> new NotFoundException("Dono não encontrado"));
+        pet.setDono(donoEncontrado);
+        petRepository.save(pet);
     }
 
     private PetResponseDTO converterParaDTO(PetEntity pet) {
