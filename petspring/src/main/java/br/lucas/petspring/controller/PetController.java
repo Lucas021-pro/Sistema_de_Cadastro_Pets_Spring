@@ -43,7 +43,12 @@ public class PetController {
 
     @PutMapping("/{petId}/adocao/{donoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void adotarPet(@PathVariable Integer petId, @PathVariable Integer donoId){
+    public void adotarPet(@PathVariable Integer petId, @PathVariable Integer donoId) {
         petService.adotarPet(petId, donoId);
+    }
+
+    @PutMapping("/{petId}")
+    public ResponseEntity<PetResponseDTO> atualizarPet(@PathVariable Integer petId, @Valid @RequestBody PetDTO petDTO) {
+        return ResponseEntity.ok(petService.atualizarPet(petId, petDTO));
     }
 }

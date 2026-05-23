@@ -19,7 +19,8 @@ public class PetResponseDTO {
     private SexoPet sexo;
     private String raca;
     private Double peso;
+    private Double idade;
+    private String cidade;
     private String rua;
     private String numero;
-    private String cidade;
 }

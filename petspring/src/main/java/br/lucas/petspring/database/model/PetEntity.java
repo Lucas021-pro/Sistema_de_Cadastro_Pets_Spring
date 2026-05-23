@@ -42,9 +42,9 @@ public class PetEntity {
     @Column(nullable = false, unique = true)
     private String protocolo;
 
+    private String cidade;
     private String rua;
     private String numero;
-    private String cidade;
 
     @ManyToOne
     @JoinColumn(name = "dono_id")

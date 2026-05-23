@@ -66,15 +66,35 @@ public class PetService {
         return converterParaDTO(pet);
     }
 
-    public void adotarPet(Integer petId, Integer donoId){
+    public void adotarPet(Integer petId, Integer donoId) {
         PetEntity pet = petRepository.findById(petId)
                 .orElseThrow(() -> new NotFoundException("Pet não encontrado"));
-        if(pet.getDono() != null) throw new BadRequestException("Este pet já foi adotado");
+        if (pet.getDono() != null) throw new BadRequestException("Este pet já foi adotado");
 
         DonoEntity donoEncontrado = donoRepository.findById(donoId)
                 .orElseThrow(() -> new NotFoundException("Dono não encontrado"));
         pet.setDono(donoEncontrado);
         petRepository.save(pet);
+    }
+
+    public PetResponseDTO atualizarPet(Integer petId, PetDTO petDTO) {
+        PetEntity pet = petRepository.findById(petId)
+                .orElseThrow(() -> new NotFoundException("Pet não encontrado"));
+
+        pet.setNome(petDTO.getNome());
+        pet.setSobrenome(petDTO.getSobrenome());
+        pet.setTipo(petDTO.getTipo());
+        pet.setSexo(petDTO.getSexo());
+        pet.setRaca(petDTO.getRaca());
+        pet.setPeso(petDTO.getPeso());
+        pet.setIdade(petDTO.getIdade());
+        pet.setCidade(petDTO.getCidade());
+        pet.setRua(petDTO.getRua());
+        pet.setNumero(petDTO.getNumero());
+
+        petRepository.save(pet);
+
+        return converterParaDTO(pet);
     }
 
     private PetResponseDTO converterParaDTO(PetEntity pet) {
@@ -87,9 +107,10 @@ public class PetService {
                 .sexo(pet.getSexo())
                 .raca(pet.getRaca())
                 .peso(pet.getPeso())
+                .idade(pet.getIdade())
+                .cidade(pet.getCidade())
                 .rua(pet.getRua())
                 .numero(pet.getNumero())
-                .cidade(pet.getCidade())
                 .build();
     }
 }

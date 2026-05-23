@@ -38,7 +38,7 @@ public class PetDTO {
     private Double idade;
 
     private String raca;
+    private String cidade;
     private String rua;
     private String numero;
-    private String cidade;
 }
