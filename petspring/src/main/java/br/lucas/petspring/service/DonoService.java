@@ -3,11 +3,15 @@ package br.lucas.petspring.service;
 import br.lucas.petspring.database.model.DonoEntity;
 import br.lucas.petspring.database.repository.IDonoRepository;
 import br.lucas.petspring.dto.DonoDTO;
+import br.lucas.petspring.dto.DonoResponseDTO;
 import br.lucas.petspring.exception.BadRequestException;
 import br.lucas.petspring.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +41,29 @@ public class DonoService {
         DonoEntity dono = donoRepository.findById(donoId)
                 .orElseThrow(() -> new NotFoundException("Dono não encontrado"));
         donoRepository.delete(dono);
+    }
+
+    public List<DonoResponseDTO> listAllDonos() {
+        return donoRepository.findAll().stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
+    }
+
+    public DonoResponseDTO buscarDonosPorId(Integer id) {
+        DonoEntity dono = donoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Dono não encontrado"));
+        return converterParaDTO(dono);
+    }
+
+    private DonoResponseDTO converterParaDTO(DonoEntity dono) {
+        return DonoResponseDTO.builder()
+                .donoId(dono.getDonoId())
+                .cpf(dono.getCpf())
+                .nome(dono.getNome())
+                .telefone(dono.getTelefone())
+                .cidade(dono.getCidade())
+                .rua(dono.getRua())
+                .numero(dono.getNumero())
+                .build();
     }
 }
