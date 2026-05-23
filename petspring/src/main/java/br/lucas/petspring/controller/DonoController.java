@@ -2,8 +2,10 @@ package br.lucas.petspring.controller;
 
 import br.lucas.petspring.dto.DonoDTO;
 import br.lucas.petspring.dto.DonoResponseDTO;
+import br.lucas.petspring.dto.PetResponseDTO;
 import br.lucas.petspring.exception.BadRequestException;
 import br.lucas.petspring.service.DonoService;
+import br.lucas.petspring.service.PetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import java.util.List;
 @Validated
 public class DonoController {
     private final DonoService donoService;
+    private final PetService petService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -45,5 +48,10 @@ public class DonoController {
     @PutMapping("/{donoId}")
     public ResponseEntity<DonoResponseDTO> atualizarDono(@PathVariable Integer donoId, @Valid @RequestBody DonoDTO donoDTO){
         return ResponseEntity.ok(donoService.atualizarDono(donoId, donoDTO));
+    }
+
+    @GetMapping("/{donoId}/pets")
+    public ResponseEntity<List<PetResponseDTO>> listarPetsPorDono(@PathVariable Integer donoId){
+        return ResponseEntity.ok(petService.listarPetsPorDono(donoId));
     }
 }

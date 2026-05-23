@@ -1,6 +1,7 @@
 package br.lucas.petspring.service;
 
 import br.lucas.petspring.database.model.DonoEntity;
+import br.lucas.petspring.database.model.PetEntity;
 import br.lucas.petspring.database.repository.IDonoRepository;
 import br.lucas.petspring.dto.DonoDTO;
 import br.lucas.petspring.dto.DonoResponseDTO;

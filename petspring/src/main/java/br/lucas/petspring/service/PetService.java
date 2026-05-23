@@ -97,6 +97,15 @@ public class PetService {
         return converterParaDTO(pet);
     }
 
+    public List<PetResponseDTO> listarPetsPorDono(Integer donoId) {
+        if (!donoRepository.existsById(donoId)) {
+            throw new NotFoundException("Dono não encontrado");
+        }
+        return petRepository.findByDonoDonoId(donoId).stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
+    }
+
     private PetResponseDTO converterParaDTO(PetEntity pet) {
         return PetResponseDTO.builder()
                 .petId(pet.getPetId())
