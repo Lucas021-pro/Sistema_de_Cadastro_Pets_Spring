@@ -3,11 +3,15 @@ package br.lucas.petspring.service;
 import br.lucas.petspring.database.model.PetEntity;
 import br.lucas.petspring.database.repository.IPetRepository;
 import br.lucas.petspring.dto.PetDTO;
+import br.lucas.petspring.dto.PetResponseDTO;
 import br.lucas.petspring.exception.BadRequestException;
 import br.lucas.petspring.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +47,34 @@ public class PetService {
         PetEntity pet = petRepository.findById(petId)
                 .orElseThrow(() -> new NotFoundException("Pet não encontrado"));
         petRepository.delete(pet);
+    }
+
+    public List<PetResponseDTO> listAllPets() {
+        return petRepository.findAll().stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
+    }
+
+    public PetResponseDTO buscarPetPorId(Integer id) {
+        PetEntity pet = petRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Pet não encontrado"));
+
+        return converterParaDTO(pet);
+    }
+
+    private PetResponseDTO converterParaDTO(PetEntity pet) {
+        return PetResponseDTO.builder()
+                .petId(pet.getPetId())
+                .protocolo(pet.getProtocolo())
+                .nome(pet.getNome())
+                .sobrenome(pet.getSobrenome())
+                .tipo(pet.getTipo())
+                .sexo(pet.getSexo())
+                .raca(pet.getRaca())
+                .peso(pet.getPeso())
+                .rua(pet.getRua())
+                .numero(pet.getNumero())
+                .cidade(pet.getCidade())
+                .build();
     }
 }
