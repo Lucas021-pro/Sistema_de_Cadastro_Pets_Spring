@@ -41,4 +41,9 @@ public class DonoController {
     public ResponseEntity<DonoResponseDTO> buscarDonosPorId(@PathVariable Integer donoId){
         return ResponseEntity.ok(donoService.buscarDonosPorId(donoId));
     }
+
+    @PutMapping("/{donoId}")
+    public ResponseEntity<DonoResponseDTO> atualizarDono(@PathVariable Integer donoId, @Valid @RequestBody DonoDTO donoDTO){
+        return ResponseEntity.ok(donoService.atualizarDono(donoId, donoDTO));
+    }
 }

@@ -55,6 +55,21 @@ public class DonoService {
         return converterParaDTO(dono);
     }
 
+    public DonoResponseDTO atualizarDono(Integer donoId, DonoDTO donoDTO) {
+        DonoEntity dono = donoRepository.findById(donoId)
+                .orElseThrow(() -> new NotFoundException("Dono não encontrado"));
+
+        dono.setNome(donoDTO.getNome());
+        dono.setTelefone(donoDTO.getTelefone());
+        dono.setCidade(donoDTO.getCidade());
+        dono.setRua(donoDTO.getRua());
+        dono.setNumero(donoDTO.getNumero());
+
+        donoRepository.save(dono);
+
+        return converterParaDTO(dono);
+    }
+
     private DonoResponseDTO converterParaDTO(DonoEntity dono) {
         return DonoResponseDTO.builder()
                 .donoId(dono.getDonoId())
