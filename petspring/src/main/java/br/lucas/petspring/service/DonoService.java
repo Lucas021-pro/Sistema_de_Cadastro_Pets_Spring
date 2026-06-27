@@ -3,6 +3,7 @@ package br.lucas.petspring.service;
 import br.lucas.petspring.database.model.DonoEntity;
 import br.lucas.petspring.database.model.PetEntity;
 import br.lucas.petspring.database.repository.IDonoRepository;
+import br.lucas.petspring.database.repository.IPetRepository;
 import br.lucas.petspring.dto.DonoDTO;
 import br.lucas.petspring.dto.DonoResponseDTO;
 import br.lucas.petspring.exception.BadRequestException;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class DonoService {
 
     private final IDonoRepository donoRepository;
+    private final IPetRepository petRepository;
 
     public void cadastrarDono(DonoDTO donoDTO) {
         donoRepository.findByCpf(donoDTO.getCpf())
@@ -38,9 +40,17 @@ public class DonoService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void deletarDono(Integer donoId) throws Exception {
+    public void deletarDono(Integer donoId) {
         DonoEntity dono = donoRepository.findById(donoId)
                 .orElseThrow(() -> new NotFoundException("Dono não encontrado"));
+
+        List<PetEntity> petsDoDono = petRepository.findByDonoDonoId(donoId);
+
+        for (PetEntity pet : petsDoDono) {
+            pet.setDono(null);
+            petRepository.save(pet);
+        }
+
         donoRepository.delete(dono);
     }
 
