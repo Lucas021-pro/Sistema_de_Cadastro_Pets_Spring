@@ -6,6 +6,7 @@ import br.lucas.petspring.database.repository.IDonoRepository;
 import br.lucas.petspring.database.repository.IPetRepository;
 import br.lucas.petspring.dto.PetDTO;
 import br.lucas.petspring.dto.PetResponseDTO;
+import br.lucas.petspring.enums.TipoPet;
 import br.lucas.petspring.exception.BadRequestException;
 import br.lucas.petspring.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -102,6 +103,12 @@ public class PetService {
             throw new NotFoundException("Dono não encontrado");
         }
         return petRepository.findByDonoDonoId(donoId).stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<PetResponseDTO> pesquisarPets(TipoPet tipo, String raca, String cidade){
+        return petRepository.buscarPetsComFiltros(tipo, raca, cidade).stream()
                 .map(this::converterParaDTO)
                 .collect(Collectors.toList());
     }

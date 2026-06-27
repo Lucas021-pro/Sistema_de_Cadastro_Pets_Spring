@@ -2,6 +2,7 @@ package br.lucas.petspring.controller;
 
 import br.lucas.petspring.dto.PetDTO;
 import br.lucas.petspring.dto.PetResponseDTO;
+import br.lucas.petspring.enums.TipoPet;
 import br.lucas.petspring.service.PetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +51,13 @@ public class PetController {
     @PutMapping("/{petId}")
     public ResponseEntity<PetResponseDTO> atualizarPet(@PathVariable Integer petId, @Valid @RequestBody PetDTO petDTO) {
         return ResponseEntity.ok(petService.atualizarPet(petId, petDTO));
+    }
+
+    @GetMapping("/pesquisa")
+    public ResponseEntity<List<PetResponseDTO>> pesquisarPets(
+            @RequestParam(required = false) TipoPet tipo,
+            @RequestParam(required = false) String raca,
+            @RequestParam(required = false) String cidade){
+        return ResponseEntity.ok(petService.pesquisarPets(tipo, raca, cidade));
     }
 }
