@@ -6,12 +6,13 @@ import java.time.Instant;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class ErrorResponse {
-    private String message;
-    private Integer status;
+public class StandardError {
     private Instant timestamp;
+    private Integer status;
+    private String error;
+    private String message;
     private String path;
 }

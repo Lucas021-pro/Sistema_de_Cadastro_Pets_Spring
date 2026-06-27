@@ -2,11 +2,14 @@ package br.lucas.petspring.handler;
 
 import br.lucas.petspring.exception.BadRequestException;
 import br.lucas.petspring.exception.NotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import br.lucas.petspring.exception.ErrorResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.Instant;
 
 @RestControllerAdvice
 public class GlobalHandlerException {
@@ -21,10 +24,12 @@ public class GlobalHandlerException {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException e) {
+    public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException e, HttpServletRequest request) {
         ErrorResponse response = ErrorResponse.builder()
                 .message(e.getMessage())
                 .status(HttpStatus.NOT_FOUND.value())
+                .timestamp(Instant.now())
+                .path(request.getRequestURI())
                 .build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
