@@ -50,7 +50,7 @@ public class PetService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void deletarPet(Integer petId) throws Exception {
+    public void deletarPet(Integer petId){
         PetEntity pet = petRepository.findById(petId)
                 .orElseThrow(() -> new NotFoundException("Pet não encontrado"));
         petRepository.delete(pet);

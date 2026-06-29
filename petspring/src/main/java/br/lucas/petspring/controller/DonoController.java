@@ -29,7 +29,7 @@ public class DonoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void cadastrarDono(@Valid @RequestBody DonoDTO donoDTO) throws BadRequestException {
+    public void cadastrarDono(@Valid @RequestBody DonoDTO donoDTO){
         donoService.cadastrarDono(donoDTO);
     }
 

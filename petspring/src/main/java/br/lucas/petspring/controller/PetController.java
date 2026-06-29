@@ -31,7 +31,7 @@ public class PetController {
 
     @DeleteMapping("/{petId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removerPet(@PathVariable Integer petId) throws Exception {
+    public void removerPet(@PathVariable Integer petId){
         petService.deletarPet(petId);
     }
 
