@@ -6,14 +6,16 @@ import br.lucas.petspring.database.repository.IDonoRepository;
 import br.lucas.petspring.database.repository.IPetRepository;
 import br.lucas.petspring.dto.DonoDTO;
 import br.lucas.petspring.dto.DonoResponseDTO;
+import br.lucas.petspring.dto.DonoUpdateDto;
 import br.lucas.petspring.exception.BadRequestException;
 import br.lucas.petspring.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,10 +56,9 @@ public class DonoService {
         donoRepository.delete(dono);
     }
 
-    public List<DonoResponseDTO> listAllDonos() {
-        return donoRepository.findAll().stream()
-                .map(this::converterParaDTO)
-                .collect(Collectors.toList());
+    public Page<DonoResponseDTO> listAllDonos(Pageable pageable) {
+        return donoRepository.findAll(pageable)
+                .map(this::converterParaDTO);
     }
 
     public DonoResponseDTO buscarDonosPorId(Integer id) {
@@ -66,15 +67,15 @@ public class DonoService {
         return converterParaDTO(dono);
     }
 
-    public DonoResponseDTO atualizarDono(Integer donoId, DonoDTO donoDTO) {
+    public DonoResponseDTO atualizarDono(Integer donoId, DonoUpdateDto donoUpdateDtoDTO) {
         DonoEntity dono = donoRepository.findById(donoId)
                 .orElseThrow(() -> new NotFoundException("Dono não encontrado"));
 
-        dono.setNome(donoDTO.getNome());
-        dono.setTelefone(donoDTO.getTelefone());
-        dono.setCidade(donoDTO.getCidade());
-        dono.setRua(donoDTO.getRua());
-        dono.setNumero(donoDTO.getNumero());
+        dono.setNome(donoUpdateDtoDTO.getNome().trim());
+        dono.setTelefone(donoUpdateDtoDTO.getTelefone().trim());
+        dono.setCidade(donoUpdateDtoDTO.getCidade());
+        dono.setRua(donoUpdateDtoDTO.getRua());
+        dono.setNumero(donoUpdateDtoDTO.getNumero());
 
         donoRepository.save(dono);
 

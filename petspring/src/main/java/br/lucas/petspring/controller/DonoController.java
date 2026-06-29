@@ -2,12 +2,16 @@ package br.lucas.petspring.controller;
 
 import br.lucas.petspring.dto.DonoDTO;
 import br.lucas.petspring.dto.DonoResponseDTO;
+import br.lucas.petspring.dto.DonoUpdateDto;
 import br.lucas.petspring.dto.PetResponseDTO;
 import br.lucas.petspring.exception.BadRequestException;
 import br.lucas.petspring.service.DonoService;
 import br.lucas.petspring.service.PetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -36,22 +40,24 @@ public class DonoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DonoResponseDTO>> listAllDonos(){
-        return ResponseEntity.ok(donoService.listAllDonos());
+    public ResponseEntity<Page<DonoResponseDTO>> listAllDonos(
+            @PageableDefault(size = 20, sort = "donoId") Pageable pageable) {
+        return ResponseEntity.ok(donoService.listAllDonos(pageable));
     }
 
     @GetMapping("/{donoId}")
-    public ResponseEntity<DonoResponseDTO> buscarDonosPorId(@PathVariable Integer donoId){
+    public ResponseEntity<DonoResponseDTO> buscarDonosPorId(@PathVariable Integer donoId) {
         return ResponseEntity.ok(donoService.buscarDonosPorId(donoId));
     }
 
     @PutMapping("/{donoId}")
-    public ResponseEntity<DonoResponseDTO> atualizarDono(@PathVariable Integer donoId, @Valid @RequestBody DonoDTO donoDTO){
-        return ResponseEntity.ok(donoService.atualizarDono(donoId, donoDTO));
+    public ResponseEntity<DonoResponseDTO> atualizarDono(@PathVariable Integer donoId,
+                                                         @Valid @RequestBody DonoUpdateDto donoUpdateDto) {
+        return ResponseEntity.ok(donoService.atualizarDono(donoId, donoUpdateDto));
     }
 
     @GetMapping("/{donoId}/pets")
-    public ResponseEntity<List<PetResponseDTO>> listarPetsPorDono(@PathVariable Integer donoId){
+    public ResponseEntity<List<PetResponseDTO>> listarPetsPorDono(@PathVariable Integer donoId) {
         return ResponseEntity.ok(petService.listarPetsPorDono(donoId));
     }
 }
