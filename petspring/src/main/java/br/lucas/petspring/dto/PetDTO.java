@@ -34,6 +34,7 @@ public class PetDTO {
     private Double peso;
 
     @NotNull(message = "A idade é obrigatória.")
+    @DecimalMin(value =  "0.0", message = "A idade não pode ser negativa.")
     @DecimalMax(value = "20.0", message = "A idade máxima permitida é de 20 anos.")
     private Double idade;
 

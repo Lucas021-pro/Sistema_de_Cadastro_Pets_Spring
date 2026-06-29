@@ -10,6 +10,8 @@ import br.lucas.petspring.enums.TipoPet;
 import br.lucas.petspring.exception.BadRequestException;
 import br.lucas.petspring.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,16 +84,16 @@ public class PetService {
         PetEntity pet = petRepository.findById(petId)
                 .orElseThrow(() -> new NotFoundException("Pet não encontrado"));
 
-        pet.setNome(petDTO.getNome());
-        pet.setSobrenome(petDTO.getSobrenome());
+        pet.setNome(petDTO.getNome().trim());
+        pet.setSobrenome(petDTO.getSobrenome().trim());
         pet.setTipo(petDTO.getTipo());
         pet.setSexo(petDTO.getSexo());
-        pet.setRaca(petDTO.getRaca());
         pet.setPeso(petDTO.getPeso());
         pet.setIdade(petDTO.getIdade());
-        pet.setCidade(petDTO.getCidade());
-        pet.setRua(petDTO.getRua());
-        pet.setNumero(petDTO.getNumero());
+        pet.setRaca(tratarCampoTexto(petDTO.getRaca()));
+        pet.setCidade(tratarCampoTexto(petDTO.getCidade()));
+        pet.setRua(tratarCampoTexto(petDTO.getRua()));
+        pet.setNumero(tratarCampoTexto(petDTO.getNumero()));
 
         petRepository.save(pet);
 
@@ -107,10 +109,9 @@ public class PetService {
                 .collect(Collectors.toList());
     }
 
-    public List<PetResponseDTO> pesquisarPets(TipoPet tipo, String raca, String cidade){
-        return petRepository.buscarPetsComFiltros(tipo, raca, cidade).stream()
-                .map(this::converterParaDTO)
-                .collect(Collectors.toList());
+    public Page<PetResponseDTO> pesquisarPets(TipoPet tipo, String raca, String cidade, Pageable pageable) {
+        return petRepository.buscarPetsComFiltros(tipo, raca, cidade, pageable)
+                .map(this::converterParaDTO);
     }
 
     private PetResponseDTO converterParaDTO(PetEntity pet) {

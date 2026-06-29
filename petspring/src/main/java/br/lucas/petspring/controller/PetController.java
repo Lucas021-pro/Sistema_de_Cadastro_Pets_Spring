@@ -6,6 +6,9 @@ import br.lucas.petspring.enums.TipoPet;
 import br.lucas.petspring.service.PetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -54,10 +57,11 @@ public class PetController {
     }
 
     @GetMapping("/pesquisa")
-    public ResponseEntity<List<PetResponseDTO>> pesquisarPets(
+    public ResponseEntity<Page<PetResponseDTO>> pesquisarPets(
             @RequestParam(required = false) TipoPet tipo,
             @RequestParam(required = false) String raca,
-            @RequestParam(required = false) String cidade){
-        return ResponseEntity.ok(petService.pesquisarPets(tipo, raca, cidade));
+            @RequestParam(required = false) String cidade,
+            @PageableDefault(size = 20, sort = "petId")Pageable pageable) {
+        return ResponseEntity.ok(petService.pesquisarPets(tipo, raca, cidade, pageable));
     }
 }
