@@ -7,9 +7,8 @@ import lombok.*;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @ToString
 public class DonoUpdateDto {
