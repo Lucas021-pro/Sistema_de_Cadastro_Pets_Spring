@@ -1,6 +1,8 @@
 spring:
   application:
     name: petspring
+  profiles:
+    active: dev
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/abrigo?createDatabaseIfNotExist=true
     username: ${DATABASE_USERNAME:root}
@@ -9,7 +11,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
