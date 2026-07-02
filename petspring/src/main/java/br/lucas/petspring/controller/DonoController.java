@@ -4,7 +4,6 @@ import br.lucas.petspring.dto.DonoDTO;
 import br.lucas.petspring.dto.DonoResponseDTO;
 import br.lucas.petspring.dto.DonoUpdateDto;
 import br.lucas.petspring.dto.PetResponseDTO;
-import br.lucas.petspring.exception.BadRequestException;
 import br.lucas.petspring.service.DonoService;
 import br.lucas.petspring.service.PetService;
 import jakarta.validation.Valid;
@@ -16,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
