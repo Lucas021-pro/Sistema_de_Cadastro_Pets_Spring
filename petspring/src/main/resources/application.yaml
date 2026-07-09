@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 spring:
   application:
     name: petspring
@@ -9,6 +12,7 @@ spring:
     password: ${DATABASE_PASSWORD:root}
 
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: update
     show-sql: false
