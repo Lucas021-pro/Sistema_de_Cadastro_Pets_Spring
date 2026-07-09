@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1>🐾 PetSpring</h1>
+<h1>PetSpring</h1>
 <p>API REST para gerenciamento de abrigo de animais — cadastro de pets, donos e fluxo completo de adoção.</p>
 
 ![Java](https://img.shields.io/badge/Java_21-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
